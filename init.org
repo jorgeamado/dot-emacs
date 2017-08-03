@@ -1,5 +1,5 @@
 #+TITLE: Emacs configuration file
-#+AUTHOR: Lars Tveito
+#+AUTHOR: dev-george
 #+BABEL: :cache yes
 #+LATEX_HEADER: \usepackage{parskip}
 #+LATEX_HEADER: \usepackage{inconsolata}
@@ -127,12 +127,12 @@
    exists after the init-file has loaded.
 
    #+BEGIN_SRC emacs-lisp
-   (add-hook
-    'after-init-hook
-    (lambda ()
-      (let ((private-file (concat user-emacs-directory "private.el")))
-        (when (file-exists-p private-file)
-          (load-file private-file)))))
+   ;(add-hook
+   ; 'after-init-hook
+   ; (lambda ()
+   ;   (let ((private-file (concat user-emacs-directory "private.el")))
+   ;     (when (file-exists-p private-file)
+   ;       (load-file private-file)))))
    #+END_SRC
 
 ** Packages
@@ -165,44 +165,48 @@
    #+BEGIN_SRC emacs-lisp
    (let* ((package--builtins nil)
           (packages
-           '(auto-compile         ; automatically compile Emacs Lisp libraries
-             cider                ; Clojure Interactive Development Environment
-             clj-refactor         ; A collection of clojure refactoring functions
+           '(
+             auto-compile         ; automatically compile Emacs Lisp libraries
+             ; cider                ; Clojure Interactive Development Environment
+             ; clj-refactor         ; A collection of clojure refactoring functions
              company              ; Modular text completion framework
-             define-word          ; display the definition of word at point
+             ; define-word          ; display the definition of word at point
              diminish             ; Diminished modes from modeline
              drag-stuff           ; Drag stuff around in Emacs
-             erlang               ; Erlang major mode
+             ; erlang               ; Erlang major mode
              expand-region        ; Increase selected region by semantic units
              focus                ; Dim color of text in surrounding sections
              idle-require         ; load elisp libraries while Emacs is idle
-             geiser               ; GNU Emacs and Scheme talk to each other
-             git-gutter-fringe    ; Fringe version of git-gutter.el
+             ; geiser               ; GNU Emacs and Scheme talk to each other
+             ; git-gutter-fringe    ; Fringe version of git-gutter.el
              golden-ratio         ; Automatic resizing windows to golden ratio
-             haskell-mode         ; A Haskell editing mode
+             ; haskell-mode         ; A Haskell editing mode
              helm                 ; Incremental and narrowing framework
              helm-ag              ; the silver searcher with helm interface
              helm-company         ; Helm interface for company-mode
              helm-dash            ; Offline documentation using Dash docsets.
              helm-projectile      ; Helm integration for Projectile
              helm-swoop           ; Efficiently hopping squeezed lines
-             jedi                 ; Python auto-completion for Emacs
-             js2-mode             ; Improved JavaScript editing mode
+             ; jedi                 ; Python auto-completion for Emacs
+             ; js2-mode             ; Improved JavaScript editing mode
              magit                ; control Git from Emacs
-             markdown-mode        ; Emacs Major mode for Markdown-formatted files
-             material-theme       ; A Theme based on Google Material Design
-             matlab-mode          ; MATLAB integration with Emacs
-             maude-mode           ; Emacs mode for the programming language Maude
+             ; markdown-mode        ; Emacs Major mode for Markdown-formatted files
+             ; material-theme       ; A Theme based on Google Material Design
+             ; matlab-mode          ; MATLAB integration with Emacs
+             ; maude-mode           ; Emacs mode for the programming language Maude
+             monokai-alt-theme    ; Theme with a dark background. Based on sublime monokai theme.
              multiple-cursors     ; Multiple cursors for Emacs
-             olivetti             ; Minor mode for a nice writing environment
+             ; olivetti             ; Minor mode for a nice writing environment
              org                  ; Outline-based notes management and organizer
              org-ref              ; citations bibliographies in org-mode
-             paredit              ; minor mode for editing parentheses
+             ; paredit              ; minor mode for editing parentheses
              pdf-tools            ; Emacs support library for PDF files
              projectile           ; Manage and navigate projects in Emacs easily
-             slime                ; Superior Lisp Interaction Mode for Emacs
-             try                  ; Try out Emacs packages
-             which-key)))         ; Display available keybindings in popup
+             ; slime                ; Superior Lisp Interaction Mode for Emacs
+             ; try                  ; Try out Emacs packages
+             which-key            ; Display available keybindings in popup
+             zenburn-theme        ; A low contrast color theme for Emacs.
+             )))         
      (ignore-errors ;; This package is only relevant for Mac OS X.
        (when (memq window-system '(mac ns))
          (push 'exec-path-from-shell packages)
@@ -248,13 +252,14 @@
 
    (dolist (feature
             '(auto-compile             ; auto-compile .el files
-              jedi                     ; auto-completion for python
-              matlab                   ; matlab-mode
-              ob-matlab                ; org-babel matlab
-              ox-latex                 ; the latex-exporter (from org)
-              ox-md                    ; Markdown exporter (from org)
-              recentf                  ; recently opened files
-              tex-mode))               ; TeX, LaTeX, and SliTeX mode commands
+              ; jedi                     ; auto-completion for python
+              ; matlab                   ; matlab-mode
+              ; ob-matlab                ; org-babel matlab
+              ; ox-latex                 ; the latex-exporter (from org)
+              ; ox-md                    ; Markdown exporter (from org)
+              ; recentf                  ; recently opened files
+              ; tex-mode                ; TeX, LaTeX, and SliTeX mode commands
+              ))               
      (idle-require feature))
 
    (setq idle-require-idle-delay 5)
@@ -278,8 +283,8 @@
          ring-bell-function 'ignore        ; Quiet
          sentence-end-double-space nil)    ; No double space
    ;; Some mac-bindings interfere with Emacs bindings.
-   (when (boundp 'mac-pass-command-to-system)
-     (setq mac-pass-command-to-system nil))
+   ; (when (boundp 'mac-pass-command-to-system)
+   ;   (setq mac-pass-command-to-system nil))
    #+END_SRC
 
    Some variables are buffer-local, so changing them using =setq= will only
@@ -301,12 +306,12 @@
    projects).
 
    #+BEGIN_SRC emacs-lisp
-   (let ((default-directory (concat user-emacs-directory "site-lisp/")))
-     (when (file-exists-p default-directory)
-       (setq load-path
-             (append
-              (let ((load-path (copy-sequence load-path)))
-                (normal-top-level-add-subdirs-to-load-path)) load-path))))
+   ;(let ((default-directory (concat user-emacs-directory "site-lisp/")))
+   ;  (when (file-exists-p default-directory)
+   ;    (setq load-path
+   ;          (append
+   ;           (let ((load-path (copy-sequence load-path)))
+   ;             (normal-top-level-add-subdirs-to-load-path)) load-path))))
    #+END_SRC
 
    Answering /yes/ and /no/ to each question from Emacs can be tedious, a
@@ -344,7 +349,7 @@
    and don't want to be warned.
 
    #+BEGIN_SRC emacs-lisp
-   (put 'narrow-to-region 'disabled nil)
+   ; (put 'narrow-to-region 'disabled nil)
    #+END_SRC
 
    Automaticly revert =doc-view=-buffers when the file changes on disk.
@@ -378,7 +383,7 @@
               dirtrack-mode                ; directory tracking in *shell*
               drag-stuff-global-mode       ; Drag stuff around
               global-company-mode          ; Auto-completion everywhere
-              global-git-gutter-mode       ; Show changes latest commit
+              ; global-git-gutter-mode       ; Show changes latest commit
               global-prettify-symbols-mode ; Greek letters should look greek
               projectile-global-mode       ; Manage and navigate projects
               recentf-mode                 ; Recently opened files
@@ -393,10 +398,10 @@
 
 ** Visual
 
-   Change the color-theme to =leuven=.
+   Change the color-theme to =monokai-alt=.
 
    #+BEGIN_SRC emacs-lisp
-   (load-theme 'leuven t)
+   (load-theme 'monokai-alt t)
    #+END_SRC
 
    =leuven= is my preferred light theme, but =monokai= makes a very nice
@@ -405,7 +410,7 @@
    #+BEGIN_SRC emacs-lisp
    (defun cycle-themes ()
      "Returns a function that lets you cycle your themes."
-     (lexical-let ((themes '#1=(leuven material . #1#)))
+     (lexical-let ((themes '#1=(monokai-alt leuven zenburn . #1#)))
        (lambda ()
          (interactive)
          ;; Rotates the thme cycle and changes the current theme.
@@ -439,7 +444,7 @@
    (safe-diminish "flyspell" 'flyspell-mode)
    (safe-diminish "helm-mode" 'helm-mode)
    (safe-diminish "projectile" 'projectile-mode)
-   (safe-diminish "paredit" 'paredit-mode "()")
+   ; (safe-diminish "paredit" 'paredit-mode "()")
    #+END_SRC
 
    [[https://github.com/syohex/emacs-git-gutter-fringe][git-gutter-fringe]] gives a great visual indication of where you've made
@@ -450,13 +455,13 @@
    I smuggled some configurations from [[https://github.com/torenord/.emacs.d/][torenord]], providing a cleaner look.
 
    #+BEGIN_SRC emacs-lisp
-   (require 'git-gutter-fringe)
+   ;(require 'git-gutter-fringe)
 
-   (dolist (p '((git-gutter:added    . "#0c0")
-                (git-gutter:deleted  . "#c00")
-                (git-gutter:modified . "#c0c")))
-     (set-face-foreground (car p) (cdr p))
-     (set-face-background (car p) (cdr p)))
+   ;(dolist (p '((git-gutter:added    . "#0c0")
+   ;             (git-gutter:deleted  . "#c00")
+   ;             (git-gutter:modified . "#c0c")))
+   ;  (set-face-foreground (car p) (cdr p))
+   ;  (set-face-background (car p) (cdr p)))
    #+END_SRC
 
    New in Emacs 24.4 is the =prettify-symbols-mode=! It's neat.
@@ -544,14 +549,14 @@
     (setq helm-dash-browser-func 'eww)
     (add-hook 'emacs-lisp-mode-hook
               (lambda () (setq-local helm-dash-docsets '("Emacs Lisp"))))
-    (add-hook 'erlang-mode-hook
-              (lambda () (setq-local helm-dash-docsets '("Erlang"))))
-    (add-hook 'java-mode-hook
-              (lambda () (setq-local helm-dash-docsets '("Java"))))
-    (add-hook 'haskell-mode-hook
-              (lambda () (setq-local helm-dash-docsets '("Haskell"))))
-    (add-hook 'clojure-mode-hook
-              (lambda () (setq-local helm-dash-docsets '("Clojure"))))
+    ; (add-hook 'erlang-mode-hook
+    ;           (lambda () (setq-local helm-dash-docsets '("Erlang"))))
+    ; (add-hook 'java-mode-hook
+    ;           (lambda () (setq-local helm-dash-docsets '("Java"))))
+    ; (add-hook 'haskell-mode-hook
+    ;           (lambda () (setq-local helm-dash-docsets '("Haskell"))))
+    ; (add-hook 'clojure-mode-hook
+    ;           (lambda () (setq-local helm-dash-docsets '("Clojure"))))
     #+END_SRC
 
 ** Calendar
@@ -587,9 +592,10 @@
 
    #+BEGIN_SRC emacs-lisp
    (setq calendar-week-start-day 1
-         calendar-latitude 60.0
-         calendar-longitude 10.7
-         calendar-location-name "Oslo, Norway")
+         ; calendar-latitude 60.0
+         ; calendar-longitude 10.7
+         ; calendar-location-name "Oslo, Norway"
+         )
    #+END_SRC
 
 ** mu4e and offlineimap
@@ -598,7 +604,7 @@
    mail-folder exists, then it's probably safe to load.
 
    #+BEGIN_SRC emacs-lisp
-   (defvar load-mail-setup (file-exists-p "~/.ifimail"))
+   ;(defvar load-mail-setup (file-exists-p "~/.ifimail"))
    #+END_SRC
 
    I use [[http://www.djcbsoftware.nl/code/mu/mu4e.html][mu4e]] (which is a part of [[http://www.djcbsoftware.nl/code/mu/][mu]]) along with [[http://docs.offlineimap.org/en/latest/][offlineimap]] on one of my
@@ -616,52 +622,52 @@
     some newlines and my signature at the top of the email.
 
     #+BEGIN_SRC emacs-lisp
-    (when load-mail-setup
-      (eval-after-load 'mu4e
-        '(progn
-           ;; Some basic mu4e settings.
-           (setq mu4e-maildir           "~/.ifimail"     ; top-level Maildir
-                 mu4e-sent-folder       "/Sent Items"    ; folder for sent messages
-                 mu4e-drafts-folder     "/INBOX.Drafts"  ; unfinished messages
-                 mu4e-trash-folder      "/INBOX.Trash"   ; trashed messages
-                 mu4e-get-mail-command  "offlineimap"    ; offlineimap to fetch mail
-                 mu4e-compose-signature "- Lars"         ; Sign my name
-                 mu4e-update-interval   (* 5 60)         ; update every 5 min
-                 mu4e-confirm-quit      nil              ; just quit
-                 mu4e-view-show-images  t                ; view images
-                 mu4e-html2text-command
-                 "html2text -utf8")                      ; use utf-8
+    ;(when load-mail-setup
+    ;  (eval-after-load 'mu4e
+    ;    '(progn
+    ;       ;; Some basic mu4e settings.
+    ;       (setq mu4e-maildir           "~/.ifimail"     ; top-level Maildir
+    ;             mu4e-sent-folder       "/Sent Items"    ; folder for sent messages
+    ;             mu4e-drafts-folder     "/INBOX.Drafts"  ; unfinished messages
+    ;             mu4e-trash-folder      "/INBOX.Trash"   ; trashed messages
+    ;             mu4e-get-mail-command  "offlineimap"    ; offlineimap to fetch mail
+    ;             mu4e-compose-signature "- Lars"         ; Sign my name
+    ;             mu4e-update-interval   (* 5 60)         ; update every 5 min
+    ;             mu4e-confirm-quit      nil              ; just quit
+    ;             mu4e-view-show-images  t                ; view images
+    ;             mu4e-html2text-command
+    ;             "html2text -utf8")                      ; use utf-8
 
-           ;; Setup for sending mail.
-           (setq user-full-name
-                 "Lars Tveito"                          ; Your full name
-                 user-mail-address
-                 "larstvei@ifi.uio.no"                  ; And email-address
-                 smtpmail-smtp-server
-                 "smtp.uio.no"                          ; Host to mail-server
-                 smtpmail-smtp-service 465              ; Port to mail-server
-                 smtpmail-stream-type 'ssl              ; Protocol used for sending
-                 send-mail-function 'smtpmail-send-it   ; Use smpt to send
-                 mail-user-agent 'mu4e-user-agent)      ; Use mu4e
+    ;       ;; Setup for sending mail.
+    ;       (setq user-full-name
+    ;             "Lars Tveito"                          ; Your full name
+    ;             user-mail-address
+    ;             "larstvei@ifi.uio.no"                  ; And email-address
+    ;             smtpmail-smtp-server
+    ;             "smtp.uio.no"                          ; Host to mail-server
+    ;             smtpmail-smtp-service 465              ; Port to mail-server
+    ;             smtpmail-stream-type 'ssl              ; Protocol used for sending
+    ;             send-mail-function 'smtpmail-send-it   ; Use smpt to send
+    ;             mail-user-agent 'mu4e-user-agent)      ; Use mu4e
 
-           ;; Register file types that can be handled by ImageMagick.
-           (when (fboundp 'imagemagick-register-types)
-             (imagemagick-register-types))
+    ;       ;; Register file types that can be handled by ImageMagick.
+    ;       (when (fboundp 'imagemagick-register-types)
+    ;         (imagemagick-register-types))
 
-           (add-hook 'mu4e-compose-mode-hook
-                     (lambda ()
-                       (auto-fill-mode 0)
-                       (visual-line-mode 1)
-                       (ispell-change-dictionary "norsk")))
+    ;       (add-hook 'mu4e-compose-mode-hook
+    ;                 (lambda ()
+    ;                   (auto-fill-mode 0)
+    ;                   (visual-line-mode 1)
+    ;                   (ispell-change-dictionary "norsk")))
 
-           (add-hook 'mu4e-view-mode-hook (lambda () (visual-line-mode 1)))
+    ;       (add-hook 'mu4e-view-mode-hook (lambda () (visual-line-mode 1)))
 
-           (defun message-insert-signature ()
-             (goto-char (point-min))
-             (search-forward-regexp "^$")
-             (insert "\n\n\n" mu4e-compose-signature))))
+    ;       (defun message-insert-signature ()
+    ;         (goto-char (point-min))
+    ;         (search-forward-regexp "^$")
+    ;         (insert "\n\n\n" mu4e-compose-signature))))
 
-      (autoload 'mu4e "mu4e" nil t))
+    ;  (autoload 'mu4e "mu4e" nil t))
     #+END_SRC
 
 ** Flyspell
@@ -719,6 +725,11 @@
      "Turns on flyspell only if a spell-checking tool is installed."
      (when (executable-find ispell-program-name)
        (local-set-key (kbd "C-c l") (cycle-languages))))
+   #+END_SRC
+   
+   #+BEGIN_SRC emacs-lisp
+   ;; add check for win os
+   (custom-set-variables '(ispell-program-name "C:\\Program Files (x86)\\Aspell\\bin\\aspell.exe"))
    #+END_SRC
 
 ** Org
@@ -1024,17 +1035,17 @@
    I use =Paredit= when editing lisp code, we enable this for all lisp-modes.
 
    #+BEGIN_SRC emacs-lisp
-   (dolist (mode '(cider-repl-mode
-                   clojure-mode
-                   ielm-mode
-                   geiser-repl-mode
-                   slime-repl-mode
-                   lisp-mode
-                   emacs-lisp-mode
-                   lisp-interaction-mode
-                   scheme-mode))
-     ;; add paredit-mode to all mode-hooks
-     (add-hook (intern (concat (symbol-name mode) "-hook")) 'paredit-mode))
+   ; (dolist (mode '(cider-repl-mode
+   ;                 clojure-mode
+   ;                 ielm-mode
+   ;                 geiser-repl-mode
+   ;                 slime-repl-mode
+   ;                 lisp-mode
+   ;                 emacs-lisp-mode
+   ;                 lisp-interaction-mode
+   ;                 scheme-mode))
+   ;   ;; add paredit-mode to all mode-hooks
+   ;   (add-hook (intern (concat (symbol-name mode) "-hook")) 'paredit-mode))
    #+END_SRC
 
 *** Emacs Lisp
@@ -1050,14 +1061,14 @@
 *** Clojure
 
     #+BEGIN_SRC emacs-lisp
-    (add-hook 'cider-repl-mode-hook (lambda () (local-set-key (kbd "C-l") 'cider-repl-clear-buffer)))
+    ;(add-hook 'cider-repl-mode-hook (lambda () (local-set-key (kbd "C-l") 'cider-repl-clear-buffer)))
     #+END_SRC
 
     #+BEGIN_SRC emacs-lisp
-    (setq cider-cljs-lein-repl
-          "(do (require 'figwheel-sidecar.repl-api)
-               (figwheel-sidecar.repl-api/start-figwheel!)
-               (figwheel-sidecar.repl-api/cljs-repl))")
+    ; (setq cider-cljs-lein-repl
+    ;       "(do (require 'figwheel-sidecar.repl-api)
+    ;            (figwheel-sidecar.repl-api/start-figwheel!)
+    ;            (figwheel-sidecar.repl-api/cljs-repl))")
     #+END_SRC
 
 *** Common lisp
@@ -1069,28 +1080,28 @@
     with this snippet.
 
     #+BEGIN_SRC emacs-lisp
-    (defun activate-slime-helper ()
-      (when (file-exists-p "~/.quicklisp/slime-helper.el")
-        (load (expand-file-name "~/.quicklisp/slime-helper.el"))
-        (define-key slime-repl-mode-map (kbd "C-l")
-          'slime-repl-clear-buffer))
-      (remove-hook 'lisp-mode-hook #'activate-slime-helper))
+    ;(defun activate-slime-helper ()
+    ;  (when (file-exists-p "~/.quicklisp/slime-helper.el")
+    ;    (load (expand-file-name "~/.quicklisp/slime-helper.el"))
+    ;    (define-key slime-repl-mode-map (kbd "C-l")
+    ;      'slime-repl-clear-buffer))
+    ;  (remove-hook 'lisp-mode-hook #'activate-slime-helper))
 
-    (add-hook 'lisp-mode-hook #'activate-slime-helper)
+    ;(add-hook 'lisp-mode-hook #'activate-slime-helper)
     #+END_SRC
 
     We can specify what Common Lisp program Slime should use (I use SBCL).
 
     #+BEGIN_SRC emacs-lisp
-    (setq inferior-lisp-program "sbcl")
+    ;(setq inferior-lisp-program "sbcl")
     #+END_SRC
 
     More sensible =loop= indentation, borrowed from [[https://github.com/simenheg][simenheg]].
 
     #+BEGIN_SRC emacs-lisp
-    (setq lisp-loop-forms-indentation   6
-          lisp-simple-loop-indentation  2
-          lisp-loop-keyword-indentation 6)
+    ;(setq lisp-loop-forms-indentation   6
+    ;      lisp-simple-loop-indentation  2
+    ;      lisp-loop-keyword-indentation 6)
     #+END_SRC
 
     #+BEGIN_SRC emacs-lisp
@@ -1104,8 +1115,8 @@
     and specify which scheme-interpreter we prefer.
 
     #+BEGIN_SRC emacs-lisp
-    (eval-after-load "geiser"
-      '(setq geiser-active-implementations '(guile)))
+    ;(eval-after-load "geiser"
+    ;  '(setq geiser-active-implementations '(guile)))
     #+END_SRC
 
 ** Java and C
@@ -1162,22 +1173,22 @@
    =tex-mode=.
 
    #+BEGIN_SRC emacs-lisp
-   (add-to-list 'auto-mode-alist '("\\.tex\\'" . latex-mode))
+   ;(add-to-list 'auto-mode-alist '("\\.tex\\'" . latex-mode))
    #+END_SRC
 
    Use ~biblatex~ for bibliography.
 
    #+BEGIN_SRC emacs-lisp
-   (setq-default bibtex-dialect 'biblatex)
+   ;(setq-default bibtex-dialect 'biblatex)
    #+END_SRC
 
    I like using the [[https://code.google.com/p/minted/][Minted]] package for source blocks in LaTeX. To make org
    use this we add the following snippet.
 
    #+BEGIN_SRC emacs-lisp
-   (eval-after-load 'org
-     '(add-to-list 'org-latex-packages-alist '("" "minted")))
-   (setq org-latex-listings 'minted)
+   ;(eval-after-load 'org
+   ;  '(add-to-list 'org-latex-packages-alist '("" "minted")))
+   ;(setq org-latex-listings 'minted)
    #+END_SRC
 
    Because [[https://code.google.com/p/minted/][Minted]] uses [[http://pygments.org][Pygments]] (an external process), we must add the
@@ -1187,45 +1198,45 @@
    (if anyone finds a nicer way to do this, please let me know).
 
    #+BEGIN_SRC emacs-lisp
-   (eval-after-load 'tex-mode
-     '(setcar (cdr (cddaar tex-compile-commands)) " -shell-escape "))
+   ;(eval-after-load 'tex-mode
+   ;  '(setcar (cdr (cddaar tex-compile-commands)) " -shell-escape "))
    #+END_SRC
 
    When exporting from Org to LaTeX, use ~latexmk~ for compilation.
 
    #+BEGIN_SRC emacs-lisp
-   (eval-after-load 'ox-latex
-     '(setq org-latex-pdf-process
-            '("latexmk -pdflatex='pdflatex -shell-escape -interaction nonstopmode' -pdf -f %f")))
+   ;(eval-after-load 'ox-latex
+   ;  '(setq org-latex-pdf-process
+   ;         '("latexmk -pdflatex='pdflatex -shell-escape -interaction nonstopmode' -pdf -f %f")))
    #+END_SRC
 
    For my thesis, I need to use our university's LaTeX class, this snippet
    makes that class available.
 
    #+BEGIN_SRC emacs-lisp
-   (eval-after-load "ox-latex"
-     '(progn
-        (add-to-list 'org-latex-classes
-                     '("ifimaster"
-                       "\\documentclass{ifimaster}
-   [DEFAULT-PACKAGES]
-   [PACKAGES]
-   [EXTRA]
-   \\usepackage{babel,csquotes,ifimasterforside,url,varioref}"
-                      ("\\chapter{%s}" . "\\chapter*{%s}")
-                      ("\\section{%s}" . "\\section*{%s}")
-                      ("\\subsection{%s}" . "\\subsection*{%s}")
-                      ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-                      ("\\paragraph{%s}" . "\\paragraph*{%s}")
-                      ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
-        (add-to-list 'org-latex-classes
-                     '("easychair" "\\documentclass{easychair}"
-                      ("\\section{%s}" . "\\section*{%s}")
-                      ("\\subsection{%s}" . "\\subsection*{%s}")
-                      ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-                      ("\\paragraph{%s}" . "\\paragraph*{%s}")
-                      ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
-       (custom-set-variables '(org-export-allow-bind-keywords t))))
+   ; (eval-after-load "ox-latex"
+   ;   '(progn
+   ;      (add-to-list 'org-latex-classes
+   ;                   '("ifimaster"
+   ;                     "\\documentclass{ifimaster}
+   ; [DEFAULT-PACKAGES]
+   ; [PACKAGES]
+   ; [EXTRA]
+   ; \\usepackage{babel,csquotes,ifimasterforside,url,varioref}"
+   ;                    ("\\chapter{%s}" . "\\chapter*{%s}")
+   ;                    ("\\section{%s}" . "\\section*{%s}")
+   ;                    ("\\subsection{%s}" . "\\subsection*{%s}")
+   ;                    ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+   ;                    ("\\paragraph{%s}" . "\\paragraph*{%s}")
+   ;                    ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+   ;      (add-to-list 'org-latex-classes
+   ;                   '("easychair" "\\documentclass{easychair}"
+   ;                    ("\\section{%s}" . "\\section*{%s}")
+   ;                    ("\\subsection{%s}" . "\\subsection*{%s}")
+   ;                    ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+   ;                    ("\\paragraph{%s}" . "\\paragraph*{%s}")
+   ;                    ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+   ;     (custom-set-variables '(org-export-allow-bind-keywords t))))
    #+END_SRC
 
 ** Markdown
@@ -1275,8 +1286,8 @@
    =haskell-indent=.
 
    #+BEGIN_SRC emacs-lisp
-   (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
-   (add-hook 'haskell-mode-hook 'turn-on-haskell-indent)
+   ;(add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
+   ;(add-hook 'haskell-mode-hook 'turn-on-haskell-indent)
    #+END_SRC
 
 ** Maude
@@ -1284,9 +1295,9 @@
    Use =---= for comments in Maude.
 
    #+BEGIN_SRC emacs-lisp
-   (add-hook 'maude-mode-hook
-             (lambda ()
-               (setq-local comment-start "---")))
+   ;(add-hook 'maude-mode-hook
+   ;          (lambda ()
+   ;            (setq-local comment-start "---")))
    #+END_SRC
 
 ** Matlab
@@ -1295,8 +1306,8 @@
    splash screen.
 
    #+BEGIN_SRC emacs-lisp
-   (eval-after-load 'matlab
-     '(add-to-list 'matlab-shell-command-switches "-nosplash"))
+   ;(eval-after-load 'matlab
+   ;  '(add-to-list 'matlab-shell-command-switches "-nosplash"))
    #+END_SRC
 * Key bindings
 
