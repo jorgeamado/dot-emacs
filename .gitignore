@@ -1,0 +1,10 @@
+auto-save-list/*
+autosaves/*
+elpa/*
+recentf*
+server/*
+url/*
+
+helm-adaptive-history
+init.elc
+projectile-bookmarks.eld
