@@ -545,11 +545,20 @@
    (helm-projectile-on)
    (helm-adaptive-mode 1)
    #+END_SRC
+** Projectile
+   set ~alien~ indexing mode for Windows
 
+   #+BEGIN_SRC emacs-lisp
+   (when (eq system-type 'windows-nt)
+      (setq projectile-indexing-method 'alien)
+   )
+   #+END_SRC       
+   
 ** Yafolding
-   Enabling ~yafolding-mode~ for ~json-mode~
+   Enabling ~yafolding-mode~ for ~json-mode~ and ~yafolding-mode~
    #+BEGIN_SRC emacs-lisp
    (add-hook 'json-mode-hook 'yafolding-mode)
+   (add-hook 'yaml-mode-hook 'yafolding-mode)
    #+END_SRC
 
 *** Helm dash
