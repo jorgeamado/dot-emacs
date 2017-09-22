@@ -170,6 +170,7 @@
              ; cider                ; Clojure Interactive Development Environment
              ; clj-refactor         ; A collection of clojure refactoring functions
              company              ; Modular text completion framework
+             csharp-mode          ; C# mode derived mode
              define-word          ; display the definition of word at point
              diminish             ; Diminished modes from modeline
              drag-stuff           ; Drag stuff around in Emacs
